@@ -62,6 +62,8 @@ curl --request POST \
 }'
 ```
 
+- Account 2
+
 ```bash
 curl --request POST \
   --url http://localhost:3000/accounts \
@@ -230,13 +232,13 @@ curl --request POST \
   "name": "Transfer from Savings",
   "entries": [
     {
-      "id": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+      "id": "5cd6d25d-a895-4a51-9c09-2a77548f795a",
       "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
       "amount": 100,
       "direction": "credit"
     },
     {
-      "id": "12345678-90ab-cdef-1234-567890abcdef",
+      "id": "1589e692-e5a2-463e-b1fd-765fcf76d559",
       "account_id": "93956cc8-877b-4151-a455-59632b2c2ef2",
       "amount": 100,
       "direction": "debit"
