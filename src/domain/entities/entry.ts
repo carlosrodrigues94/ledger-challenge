@@ -1,12 +1,12 @@
 export class EntryEntity {
   id: string;
-  direction: string;
+  direction: 'debit' | 'credit';
   amount: number;
   accountId: string;
 
   constructor(
     id: string,
-    direction: string,
+    direction: 'debit' | 'credit',
     amount: number,
     accountId: string,
   ) {
