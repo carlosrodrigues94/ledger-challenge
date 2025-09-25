@@ -1,98 +1,250 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Ledger Challenge
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A simple double-entry accounting ledger system built with NestJS that allows you to create accounts, manage transactions, and track balances according to double-entry bookkeeping principles.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **Account Management**: Create accounts with debit or credit direction
+- **Transaction Processing**: Create balanced transactions with multiple entries
+- **Balance Tracking**: Automatic balance calculation based on account and entry directions
+- **Data Validation**: Ensures transactions are balanced and accounts exist
+- **In-Memory Storage**: Uses JSON file for data persistence
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Quick Start
 
-## Project setup
+### Prerequisites
+
+- Node.js (v18 or higher)
+- pnpm (recommended) or npm
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-$ pnpm install
+git clone <repository-url>
+cd ledger-challenge
 ```
 
-## Compile and run the project
+2. Install dependencies:
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm install
 ```
 
-## Run tests
+3. Start the development server:
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+pnpm start:dev
 ```
 
-## Deployment
+The API will be available at `http://localhost:3000`
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## API Endpoints
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Accounts
+
+#### Create Account
+
+**Request:**
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+curl --request POST \
+     --url http://localhost:3000/accounts \
+     --header 'Accept: application/json' \
+     --header 'Content-Type: application/json' \
+     --data '{
+  "name": "Cash Account",
+  "direction": "debit",
+  "id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd"
+}'
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**Response:**
 
-## Resources
+```json
+{
+  "id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+  "name": "Cash Account",
+  "balance": 0,
+  "direction": "debit"
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+#### Get All Accounts
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Request:**
 
-## Support
+```bash
+curl --location --request GET 'http://localhost:3000/accounts'
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**Response:**
 
-## Stay in touch
+```json
+[
+  {
+    "id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+    "name": "Cash Account",
+    "balance": 500,
+    "direction": "debit"
+  },
+  {
+    "id": "dbf17d00-8701-4c4e-9fc5-6ae33c324309",
+    "name": "Savings Account",
+    "balance": 1000,
+    "direction": "credit"
+  }
+]
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### Get Account by ID
+
+**Request:**
+
+```bash
+curl --location --request GET 'http://localhost:3000/accounts/71cde2aa-b9bc-496a-a6f1-34964d05e6fd'
+```
+
+**Response:**
+
+```json
+{
+  "id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+  "name": "Cash Account",
+  "balance": 500,
+  "direction": "debit"
+}
+```
+
+### Transactions
+
+#### Create Transaction
+
+**Request:**
+
+```bash
+curl --location --request POST 'http://localhost:3000/transactions' \
+     --header 'Content-Type: application/json' \
+     --data-raw '{
+  "name": "Transfer to Savings",
+  "id": "3256dc3c-7b18-4a21-95c6-146747cf2971",
+  "entries": [
+    {
+      "direction": "debit",
+      "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+      "amount": 100
+    },
+    {
+      "direction": "credit",
+      "account_id": "dbf17d00-8701-4c4e-9fc5-6ae33c324309",
+      "amount": 100
+    }
+  ]
+}'
+```
+
+**Response:**
+
+```json
+{
+  "id": "3256dc3c-7b18-4a21-95c6-146747cf2971",
+  "name": "Transfer to Savings",
+  "entries": [
+    {
+      "id": "9f694f8c-9c4c-44cf-9ca9-0cb1a318f0a7",
+      "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+      "amount": 100,
+      "direction": "debit"
+    },
+    {
+      "id": "a5c1b7f0-e52e-4ab6-8f31-c380c2223efa",
+      "account_id": "dbf17d00-8701-4c4e-9fc5-6ae33c324309",
+      "amount": 100,
+      "direction": "credit"
+    }
+  ]
+}
+```
+
+## How Double-Entry Works
+
+In this system, every transaction must be balanced - the sum of all debits must equal the sum of all credits.
+
+### Account Directions
+
+- **Debit Account**: Increases with debit entries, decreases with credit entries
+- **Credit Account**: Increases with credit entries, decreases with debit entries
+
+### Balance Calculation
+
+When an entry is applied to an account:
+
+- If entry direction matches account direction → **balance increases**
+- If entry direction differs from account direction → **balance decreases**
+
+### Example Transaction
+
+Transfer $100 from Cash (debit account) to Savings (credit account):
+
+| Account | Direction | Entry Direction | Entry Amount | Balance Change |
+| ------- | --------- | --------------- | ------------ | -------------- |
+| Cash    | debit     | debit           | -$100        | -$100          |
+| Savings | credit    | credit          | +$100        | +$100          |
+
+## Testing
+
+Run the test suite:
+
+```bash
+pnpm test
+```
+
+Run tests in watch mode:
+
+```bash
+pnpm test:watch
+```
+
+## Development
+
+### Available Scripts
+
+- `pnpm start:dev` - Start development server with hot reload
+- `pnpm build` - Build the application
+- `pnpm start:prod` - Start production server
+- `pnpm lint` - Run ESLint
+- `pnpm format` - Format code with Prettier
+
+### Project Structure
+
+```
+src/
+├── app/
+│   ├── contracts/     # Repository interfaces
+│   ├── exceptions/    # Custom exceptions
+│   └── usecases/      # Business logic
+├── domain/
+│   └── entities/      # Domain models
+├── presentation/
+│   ├── controllers/   # HTTP controllers
+│   ├── dtos/         # Data transfer objects
+│   └── filters/      # Exception filters
+└── main.ts           # Application entry point
+```
+
+## Data Storage
+
+The application uses an in-memory JSON file (`database.json`) for data persistence. Data is automatically saved and loaded when the application starts.
+
+## Error Handling
+
+The API includes comprehensive error handling:
+
+- **400 Bad Request**: Invalid transaction data, insufficient balance
+- **404 Not Found**: Account not found
+- **Validation Errors**: Missing required fields, invalid data types
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is part of the Conduit Financial engineering challenge.
