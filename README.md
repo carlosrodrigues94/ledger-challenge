@@ -48,6 +48,8 @@ The API will be available at `http://localhost:3000`
 
 **Request:**
 
+- Account 1
+
 ```bash
 curl --request POST \
      --url http://localhost:3000/accounts \
@@ -60,6 +62,18 @@ curl --request POST \
 }'
 ```
 
+```bash
+curl --request POST \
+  --url http://localhost:3000/accounts \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "Cash Account 2",
+  "direction": "credit",
+  "id": "93956cc8-877b-4151-a455-59632b2c2ef2"
+}'
+```
+
 **Response:**
 
 ```json
@@ -68,6 +82,15 @@ curl --request POST \
   "name": "Cash Account",
   "balance": 0,
   "direction": "debit"
+}
+```
+
+```json
+{
+  "id": "93956cc8-877b-4151-a455-59632b2c2ef2",
+  "name": "Cash Account 2",
+  "balance": 0,
+  "direction": "credit"
 }
 ```
 
@@ -90,9 +113,9 @@ curl --location --request GET 'http://localhost:3000/accounts'
     "direction": "debit"
   },
   {
-    "id": "dbf17d00-8701-4c4e-9fc5-6ae33c324309",
-    "name": "Savings Account",
-    "balance": 1000,
+    "id": "93956cc8-877b-4151-a455-59632b2c2ef2",
+    "name": "Cash Account 2",
+    "balance": 100,
     "direction": "credit"
   }
 ]
@@ -121,27 +144,31 @@ curl --location --request GET 'http://localhost:3000/accounts/71cde2aa-b9bc-496a
 
 #### Create Transaction
 
+- Transaction to increase balance
+
 **Request:**
 
 ```bash
 curl --location --request POST 'http://localhost:3000/transactions' \
      --header 'Content-Type: application/json' \
      --data-raw '{
-  "name": "Transfer to Savings",
-  "id": "3256dc3c-7b18-4a21-95c6-146747cf2971",
-  "entries": [
-    {
-      "direction": "debit",
-      "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
-      "amount": 100
-    },
-    {
-      "direction": "credit",
-      "account_id": "dbf17d00-8701-4c4e-9fc5-6ae33c324309",
-      "amount": 100
-    }
-  ]
-}'
+      "name": "Transfer to Savings",
+      "id": "3256dc3c-7b18-4a21-95c6-146747cf2971",
+      "entries": [
+        {
+          "direction": "debit",
+          "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+          "amount": 100,
+          "id": "9b7f3ba5-b584-4fab-9f1f-ee99e2731bff"
+        },
+        {
+          "direction": "credit",
+          "account_id": "93956cc8-877b-4151-a455-59632b2c2ef2",
+          "amount": 100,
+          "id": "1b06f616-bf6e-4b4d-a055-661cd57f742b"
+        }
+      ]
+    }'
 ```
 
 **Response:**
@@ -152,16 +179,67 @@ curl --location --request POST 'http://localhost:3000/transactions' \
   "name": "Transfer to Savings",
   "entries": [
     {
-      "id": "9f694f8c-9c4c-44cf-9ca9-0cb1a318f0a7",
+      "id": "9b7f3ba5-b584-4fab-9f1f-ee99e2731bff",
       "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
       "amount": 100,
       "direction": "debit"
     },
     {
-      "id": "a5c1b7f0-e52e-4ab6-8f31-c380c2223efa",
-      "account_id": "dbf17d00-8701-4c4e-9fc5-6ae33c324309",
+      "id": "1b06f616-bf6e-4b4d-a055-661cd57f742b",
+      "account_id": "93956cc8-877b-4151-a455-59632b2c2ef2",
       "amount": 100,
       "direction": "credit"
+    }
+  ]
+}
+```
+
+- Transaction to decrease balance
+
+**Request:**
+
+```bash
+curl --request POST \
+  --url http://localhost:3000/transactions \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "Transfer from Savings",
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "entries": [
+    {
+      "direction": "credit",
+      "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+      "amount": 100,
+      "id": "5cd6d25d-a895-4a51-9c09-2a77548f795a"
+    },
+    {
+      "direction": "debit",
+      "account_id": "93956cc8-877b-4151-a455-59632b2c2ef2",
+      "amount": 100,
+      "id": "1589e692-e5a2-463e-b1fd-765fcf76d559"
+    }
+  ]
+}'
+```
+
+**Response:**
+
+```json
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "Transfer from Savings",
+  "entries": [
+    {
+      "id": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+      "account_id": "71cde2aa-b9bc-496a-a6f1-34964d05e6fd",
+      "amount": 100,
+      "direction": "credit"
+    },
+    {
+      "id": "12345678-90ab-cdef-1234-567890abcdef",
+      "account_id": "93956cc8-877b-4151-a455-59632b2c2ef2",
+      "amount": 100,
+      "direction": "debit"
     }
   ]
 }
